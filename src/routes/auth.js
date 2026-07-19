@@ -27,7 +27,14 @@ router.post("/login", async (req,res) => {
         process.env.JWT_SECRET, 
         { expiresIn: '1d' }
     )
-    res.json({ message: 'Login successful', user, token });
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'strict',
+        maxAge: 7*24*60*60*1000
+    })
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.json({ message: 'Login successful', userWithoutPassword, token });
 })
 
 

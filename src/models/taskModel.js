@@ -9,9 +9,21 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
-    email: {
+    expiry: {
         type: String,
         required: true
+    },
+    asignee: {
+        type: String,
+        required: false
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    orgId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true 
     }
 }, {timestamps: true})
 
