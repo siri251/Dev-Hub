@@ -39,7 +39,7 @@ router.post("/login", async (req,res) => {
 
 router.post("/isLoggedIn", async (req,res) => {
     const token = req.cookies.token;
-    if (token) {
+    if (!token) {
         return res.status(401).json({ message: 'User Not Logged In' });
     }
     try {
