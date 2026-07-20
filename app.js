@@ -23,7 +23,6 @@ app.use(cors({
     },
     credentials: true
 }));
-app.use(cors())
 app.use(cookieParser());  
 app.use('/api/auth', authRouter)
 app.use('/api/projects', projectRouter)
