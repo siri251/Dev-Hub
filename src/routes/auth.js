@@ -34,8 +34,24 @@ router.post("/login", async (req,res) => {
         maxAge: 7*24*60*60*1000
     })
     const { password: _, ...userWithoutPassword } = user.toObject();
-    res.json({ message: 'Login successful', userWithoutPassword, token });
+    res.json({ message: 'Login successful', userWithoutPassword });
 })
+
+router.post("/isLoggedIn", async (req,res) => {
+    const token = req.cookies.token;
+    if (token) {
+        return res.status(401).json({ message: 'User Not Logged In' });
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId).select("-password");
+        if (!user) return res.status(401).json({ message: "User not found" });
+        res.json({ user });
+    } catch (err) {
+        res.status(401).json({ message: "Invalid or expired token" });
+    }
+})
+
 
 
 router.post('/logout', (req, res) => {
